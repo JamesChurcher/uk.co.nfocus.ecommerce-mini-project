@@ -12,8 +12,8 @@ namespace uk.co.nfocus.ecommerce_mini_project
         private double couponWorth = 0.15;
         private int shippingCost = 395;
 
-        [Test]
-        public void TestCase1()
+        [TestCase("newexampleemail@email.com", "MyPassword12345@")]
+        public void TestCase1(string testUsername, string testPassword)
         {
             // Go to shop url
             driver.Navigate().GoToUrl("https://www.edgewordstraining.co.uk/demo-site/");
@@ -22,8 +22,11 @@ namespace uk.co.nfocus.ecommerce_mini_project
             // Dismiss popup
             driver.FindElement(By.LinkText("Dismiss")).Click();
 
+            // Create NavBar POM instance
+            NavBarPOM navBar = new(driver);
+
             // Navigate to account login page
-            driver.FindElement(By.LinkText("My account")).Click();
+            navBar.GoAccount();
             TestHelper.WaitForElDisplayed(driver, By.Name("login")); //Wait for login page to load
             Console.WriteLine("Navigated to login page");
 
@@ -31,13 +34,13 @@ namespace uk.co.nfocus.ecommerce_mini_project
             LoginPagePOM loginPage = new(driver);
 
             //Provide username, password, and click
-            bool loginStatus = loginPage.LoginExpectSuccess("newexampleemail@email.com", "MyPassword12345@");
+            bool loginStatus = loginPage.LoginExpectSuccess(testUsername, testPassword);
             Assert.That(loginStatus, "Could not login");   //Verify successful login
 
             Console.WriteLine("Login complete");
 
             // Enter the shop
-            driver.FindElement(By.LinkText("Shop")).Click();
+            navBar.GoShop();
             TestHelper.WaitForElDisplayed(driver, By.LinkText("Add to cart"));  //Wait until shop page has loaded
             Console.WriteLine("Navigated to shop");
 
@@ -47,7 +50,7 @@ namespace uk.co.nfocus.ecommerce_mini_project
             Console.WriteLine("Add item to cart");
 
             // View cart
-            driver.FindElement(By.LinkText("View cart")).Click();
+            navBar.GoCart();
             TestHelper.WaitForElDisplayed(driver, By.LinkText("Proceed to checkout"));  //Wait until cart page has loaded
             Console.WriteLine("Navigated to cart");
 
@@ -114,9 +117,8 @@ namespace uk.co.nfocus.ecommerce_mini_project
             Console.WriteLine("Remove items from cart");
 
             // Logout
-            driver.FindElement(By.LinkText("My account")).Click();
+            navBar.GoAccount();
             TestHelper.WaitForElDisplayed(driver, By.LinkText("Logout"));   //Wait for account page to load
-            //driver.FindElement(By.LinkText("Logout")).Click();
 
             //Attempt logout
             bool logoutStatus = loginPage.LogoutExpectSuccess();
