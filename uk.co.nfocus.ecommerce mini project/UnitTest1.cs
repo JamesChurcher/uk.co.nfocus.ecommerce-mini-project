@@ -2,6 +2,7 @@
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.Extensions;
 using System.Text.RegularExpressions;
+using uk.co.nfocus.ecommerce_mini_project.POMClasses;
 using uk.co.nfocus.ecommerce_mini_project.Utilities;
 
 namespace uk.co.nfocus.ecommerce_mini_project
@@ -27,14 +28,12 @@ namespace uk.co.nfocus.ecommerce_mini_project
             Console.WriteLine("Navigated to login page");
 
             // Login to said account
-            var usernameEle = driver.FindElement(By.Id("username"));
-            usernameEle.SendKeys("newexampleemail@email.com");  //Input username
+            LoginPagePOM loginPage = new(driver);
 
-            var passwordEle = driver.FindElement(By.Id("password"));
-            passwordEle.SendKeys("MyPassword12345@");   //Input password
+            //Provide username, password, and click
+            bool loginStatus = loginPage.LoginExpectSuccess("newexampleemail@email.com", "MyPassword12345@");
+            Assert.That(loginStatus, "Could not login");   //Verify successful login
 
-            driver.FindElement(By.Name("login")).Click();   //Submit login
-            TestHelper.WaitForElDisplayed(driver, By.LinkText("Logout"));   //Wait until login has completed
             Console.WriteLine("Login complete");
 
             // Enter the shop
@@ -117,7 +116,12 @@ namespace uk.co.nfocus.ecommerce_mini_project
             // Logout
             driver.FindElement(By.LinkText("My account")).Click();
             TestHelper.WaitForElDisplayed(driver, By.LinkText("Logout"));   //Wait for account page to load
-            driver.FindElement(By.LinkText("Logout")).Click();
+            //driver.FindElement(By.LinkText("Logout")).Click();
+
+            //Attempt logout
+            bool logoutStatus = loginPage.LogoutExpectSuccess();
+            Assert.That(logoutStatus, "Could not logout");   //Verify successful login
+
             Console.WriteLine("Logout from account");
 
             Console.WriteLine("--Test Complete!--");
