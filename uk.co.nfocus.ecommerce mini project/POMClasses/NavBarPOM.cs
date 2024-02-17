@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static uk.co.nfocus.ecommerce_mini_project.Utilities.TestHelper;
 
 namespace uk.co.nfocus.ecommerce_mini_project.POMClasses
 {
@@ -40,12 +41,36 @@ namespace uk.co.nfocus.ecommerce_mini_project.POMClasses
         public void GoShop()
         {
             _shopButton.Click();
+            WaitForElDisplayed(_driver, By.LinkText("Add to cart"));  //Wait until shop page has loaded
         }
 
         // Go to cart page
-        public void GoCart()
+        public void GoCart(bool isCartEmpty)
         {
             _cartButton.Click();
+
+            //if (isCartEmpty)
+            //{
+            //    try
+            //    {
+            //        TestHelper.WaitForElDisplayed(_driver, By.LinkText("Return to shop"));  //Wait until cart page has loaded
+            //    }
+            //    catch (NoSuchElementException e)
+            //    {
+
+            //    }
+            //}
+            //else
+            //{
+            //    try
+            //    {
+            //        TestHelper.WaitForElDisplayed(_driver, By.LinkText("Proceed to checkout"));  //Wait until cart page has loaded
+            //    }
+            //    catch (NoSuchElementException e)
+            //    {
+
+            //    }
+            //}
         }
 
         // Go to checkout page
@@ -58,6 +83,7 @@ namespace uk.co.nfocus.ecommerce_mini_project.POMClasses
         public void GoAccount()
         {
             _accountButton.Click();
+            WaitForElDisplayed(_driver, By.ClassName("entry-title")); //Wait for login page to load
         }
 
         // Go to blog page

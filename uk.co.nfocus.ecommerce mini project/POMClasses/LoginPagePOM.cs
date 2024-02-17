@@ -68,8 +68,8 @@ namespace uk.co.nfocus.ecommerce_mini_project.POMClasses
 
             try
             {
-                //TestHelper.WaitForElDisplayed(_driver, By.LinkText("Logout"));  //Wait until login has completed
-                var logoutButton = _logoutButton;
+                TestHelper.WaitForElDisplayed(_driver, By.LinkText("Logout"));  //Wait until login has completed
+                //var logoutButton = _logoutButton;
                 return true;    //Login success
             }
             catch (NoSuchElementException e)
@@ -84,8 +84,8 @@ namespace uk.co.nfocus.ecommerce_mini_project.POMClasses
 
             try
             {
-                //TestHelper.WaitForElDisplayed(_driver, By.LinkText("Log in"));  //Wait until logout has completed
-                var loginButton = _submitFormButton;
+                TestHelper.WaitForElDisplayed(_driver, By.Name("login"));  //Wait until logout has completed
+                //var loginButton = _submitFormButton;
                 return true;    //Logout success
             }
             catch (NoSuchElementException e)

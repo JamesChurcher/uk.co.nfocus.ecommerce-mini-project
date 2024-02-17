@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static uk.co.nfocus.ecommerce_mini_project.Utilities.TestHelper;
 
 namespace uk.co.nfocus.ecommerce_mini_project.Utilities
 {

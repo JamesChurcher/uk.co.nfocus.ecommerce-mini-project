@@ -18,7 +18,7 @@ namespace uk.co.nfocus.ecommerce_mini_project.Utilities
         // Explicit wait for element to be displayed
         public static void WaitForElDisplayed(IWebDriver driver, By locator)
         {
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(5));
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(4));
             wait.Until(drv => drv.FindElement(locator).Displayed);
         }
 

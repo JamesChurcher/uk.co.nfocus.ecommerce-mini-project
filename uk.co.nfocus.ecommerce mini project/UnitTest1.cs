@@ -4,16 +4,17 @@ using OpenQA.Selenium.Support.Extensions;
 using System.Text.RegularExpressions;
 using uk.co.nfocus.ecommerce_mini_project.POMClasses;
 using uk.co.nfocus.ecommerce_mini_project.Utilities;
+using static uk.co.nfocus.ecommerce_mini_project.Utilities.TestHelper;
 
 namespace uk.co.nfocus.ecommerce_mini_project
 {
     internal class Tests : BaseTest
     {
-        private double couponWorth = 0.15;
-        private int shippingCost = 395;
+        private const double couponWorth = 0.15;
+        private const int shippingCost = 395;
 
-        [TestCase("newexampleemail@email.com", "MyPassword12345@")]
-        public void TestCase1(string testUsername, string testPassword)
+        [TestCase("newexampleemail@email.com", "MyPassword12345@", "edgewords")]
+        public void TestCase1(string testUsername, string testPassword, string testDiscountCode)
         {
             // Go to shop url
             driver.Navigate().GoToUrl("https://www.edgewordstraining.co.uk/demo-site/");
@@ -27,7 +28,6 @@ namespace uk.co.nfocus.ecommerce_mini_project
 
             // Navigate to account login page
             navBar.GoAccount();
-            TestHelper.WaitForElDisplayed(driver, By.Name("login")); //Wait for login page to load
             Console.WriteLine("Navigated to login page");
 
             // Login to said account
@@ -36,52 +36,35 @@ namespace uk.co.nfocus.ecommerce_mini_project
             //Provide username, password, and click
             bool loginStatus = loginPage.LoginExpectSuccess(testUsername, testPassword);
             Assert.That(loginStatus, "Could not login");   //Verify successful login
-
             Console.WriteLine("Login complete");
 
             // Enter the shop
             navBar.GoShop();
-            TestHelper.WaitForElDisplayed(driver, By.LinkText("Add to cart"));  //Wait until shop page has loaded
             Console.WriteLine("Navigated to shop");
 
             // Add to basket
-            driver.FindElement(By.LinkText("Add to cart")).Click();
-            TestHelper.WaitForElDisplayed(driver, By.LinkText("View cart"));  //Wait until item has been fully added to cart
+            ShopPagePOM shopPage = new(driver);
+            shopPage.ClickAddToBasket();
             Console.WriteLine("Add item to cart");
 
             // View cart
-            navBar.GoCart();
-            TestHelper.WaitForElDisplayed(driver, By.LinkText("Proceed to checkout"));  //Wait until cart page has loaded
+            navBar.GoCart(isCartEmpty: false);
+            WaitForElDisplayed(driver, By.LinkText("Proceed to checkout"));  //Wait until cart page has loaded
             Console.WriteLine("Navigated to cart");
 
             // Apply coupon
-            driver.FindElement(By.Id("coupon_code")).SendKeys("edgewords"); //Type coupon
-            driver.FindElement(By.Name("apply_coupon")).Click();            //Submit coupon
-            TestHelper.WaitForElDisplayed(driver, By.ClassName("cart-discount"));   //Wait until coupon is accepted
+            CartPagePOM cartPage = new(driver);
+            bool discountStatus = cartPage.ApplyDiscountExpectSuccess(testDiscountCode);
+            Assert.That(discountStatus, "Could not apply discount");   //Verify discount was applied
             Console.WriteLine("Applied coupon code");
 
-            ////Take a screenshot -- full page
-            //Screenshot screenshot = driver.TakeScreenshot();
-            //screenshot.SaveAsFile($"{TestHelper.ScreenshotPath}ecommerce_testcase_1.png");
-            //TestContext.AddTestAttachment($"{TestHelper.ScreenshotPath}ecommerce_testcase_1.png", "Test case 1 checkout page");
-
-            ////Take a screenshot of a web element
-            //IWebElement cartElm = driver.FindElement(By.ClassName("woocommerce-cart-form"));
-            //IWebElement breakdownElm = driver.FindElement(By.ClassName("checkout-button"));
-            //Screenshot screenshotElm;
-
-            //screenshotElm = (cartElm as ITakesScreenshot).GetScreenshot();
-            //TestHelper.SaveAndAttachScreenShot(screenshotElm, "cart_items", "cart items");
-
-            //screenshotElm = (breakdownElm as ITakesScreenshot).GetScreenshot();
-            //TestHelper.SaveAndAttachScreenShot(screenshotElm, "cart_breakdown", "cart breakdown with discount");
-
             // Get product price
-            int price = TestHelper.EleToInt(driver, By.CssSelector(".product-subtotal>.amount>bdi"));
+            int price = StringToInt(cartPage.GetCartSubtotal());
+            Console.WriteLine($"Individual price: {price}");
 
             // Actual and expected discount
             int expectedDiscount = (int)(price * couponWorth);     // Calculate expected discount amount
-            int actualDiscount = TestHelper.EleToInt(driver, By.CssSelector(".cart-discount .woocommerce-Price-amount")); // Get actual discount amount
+            int actualDiscount = StringToInt(cartPage.GetAppliedDiscount());    // Get actual discount amount
 
             //Verification
             // Assess coupon removes 15%
@@ -97,7 +80,7 @@ namespace uk.co.nfocus.ecommerce_mini_project
 
             // Get and Calculate actual and expected totals
             int expectedTotal = (int)(price * (1 - couponWorth)) + shippingCost;
-            int actualTotal = TestHelper.EleToInt(driver, By.CssSelector("strong bdi"));
+            int actualTotal = StringToInt(cartPage.GetCartTotal());
 
             // Assess final total is correct
             try     //Verify final price
@@ -111,9 +94,7 @@ namespace uk.co.nfocus.ecommerce_mini_project
             }
 
             // Remove discount and items from cart
-            driver.FindElement(By.LinkText("[Remove]")).Click();
-            driver.FindElement(By.LinkText("×")).Click();
-            TestHelper.WaitForElDisplayed(driver, By.ClassName("cart-empty"));  //Wait for empty cart to be loaded
+            cartPage.MakeCartEmpty();   //Remove the discount and products
             Console.WriteLine("Remove items from cart");
 
             // Logout
