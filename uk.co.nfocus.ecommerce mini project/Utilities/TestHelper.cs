@@ -22,6 +22,10 @@ namespace uk.co.nfocus.ecommerce_mini_project.Utilities
             wait.Until(drv => drv.FindElement(locator).Displayed);
         }
 
+        //--------------------------------------------------
+        //TO:DO > Write wait method for aleady given element
+        //--------------------------------------------------
+
         // Remove all non numerical characters from a string
         // Returns integer
         public static int StringToInt(string myString)

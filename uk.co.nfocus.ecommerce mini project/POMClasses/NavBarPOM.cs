@@ -77,13 +77,14 @@ namespace uk.co.nfocus.ecommerce_mini_project.POMClasses
         public void GoCheckout()
         {
             _checkoutButton.Click();
+            WaitForElDisplayed(_driver, By.ClassName("entry-title")); //TO:DO > Change to wait for url //Wait for login page to load
         }
 
         // Go to account page
         public void GoAccount()
         {
             _accountButton.Click();
-            WaitForElDisplayed(_driver, By.ClassName("entry-title")); //Wait for login page to load
+            WaitForElDisplayed(_driver, By.ClassName("entry-title")); //TO:DO > Change to wait for url //Wait for login page to load
         }
 
         // Go to blog page

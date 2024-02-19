@@ -101,13 +101,14 @@ namespace uk.co.nfocus.ecommerce_mini_project.POMClasses
         public void ClickPlaceOrder()
         {
             Console.WriteLine("Position: " + _driver.FindElement(By.Id("payment")).GetCssValue("position"));
-            new WebDriverWait(_driver, TimeSpan.FromSeconds(4)).Until(drv => drv.FindElement(By.Id("payment")).GetCssValue("position")=="relative");
+            //new WebDriverWait(_driver, TimeSpan.FromSeconds(4)).Until(drv => drv.FindElement(By.Id("payment")).GetCssValue("position")=="relative");
             //WaitForElDisplayed(_driver, By.Id("place_order"));
 
             Console.WriteLine("Before click");
-            //Thread.Sleep(15000);
             _placeOrderButton.Click();
             Console.WriteLine("After click");
+
+            new WebDriverWait(_driver, TimeSpan.FromSeconds(4)).Until(drv => drv.Url.Contains("order"));    //Wait for order summary page to show
         }
 
         //Highlevel service methods
@@ -123,7 +124,7 @@ namespace uk.co.nfocus.ecommerce_mini_project.POMClasses
 
             SelectCounrtyDropdown(country);
 
-            //Thread.Sleep(4000);
+            Thread.Sleep(2000);
 
             ClickPlaceOrder();
         }

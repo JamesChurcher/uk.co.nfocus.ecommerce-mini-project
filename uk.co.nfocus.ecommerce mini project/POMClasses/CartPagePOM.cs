@@ -111,6 +111,7 @@ namespace uk.co.nfocus.ecommerce_mini_project.POMClasses
         {
             ClickRemoveDiscountButton();
             //new WebDriverWait(_driver, TimeSpan.FromSeconds(3)).Until(drv => (drv.FindElements(By.LinkText("[Remove]")).Count==0));    //Wait until discount is no longer applied
+            //Console.WriteLine("Is remove item button clickable? " + _removeFromCartButton.Enabled);
 
             ClickRemoveItemButton();
             //new WebDriverWait(_driver, TimeSpan.FromSeconds(3)).Until(drv => !_removeFromCartButton.Displayed);    //Wait until item is no longer applied

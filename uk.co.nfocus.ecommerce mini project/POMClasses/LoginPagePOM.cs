@@ -1,4 +1,5 @@
 ﻿using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,6 +27,8 @@ namespace uk.co.nfocus.ecommerce_mini_project.POMClasses
         private IWebElement _passwordField => _driver.FindElement(By.Id("password"));
         private IWebElement _submitFormButton => _driver.FindElement(By.Name("login"));     //TO:DO > Add waits
         private IWebElement _logoutButton => _driver.FindElement(By.LinkText("Logout"));    //TO:DO > Add waits
+        private IWebElement _ordersButton => _driver.FindElement(By.LinkText("Orders"));
+        private IReadOnlyList<IWebElement> _allOrderNumbers => _driver.FindElements(By.PartialLinkText("#"));
 
         //Service methods
 
@@ -53,6 +56,13 @@ namespace uk.co.nfocus.ecommerce_mini_project.POMClasses
         public void ClickLogout()
         {
             _logoutButton.Click();
+        }
+
+        //Check my orders
+        public void ClickOrders()
+        {
+            _ordersButton.Click();
+            new WebDriverWait(_driver, TimeSpan.FromSeconds(4)).Until(drv => drv.Url.Contains("my-account/order"));    //Wait for order summary page to show
         }
 
         //Higher level helpers
@@ -92,6 +102,26 @@ namespace uk.co.nfocus.ecommerce_mini_project.POMClasses
             {
                 return false;   //Failed logout
             }
+        }
+
+        //Get order numbers for all of my orders
+        //  Params  -> orderNumber: The order number to check
+        //  Returns -> (bool) if order is listed under the account
+        public bool CheckIfOrderInOrderNumbers(string orderNumber)
+        {
+            ClickOrders();
+            var orderNumbers = _allOrderNumbers;
+
+            foreach(var order in orderNumbers)
+            {
+                //Console.WriteLine($"Does current order {order.Text} contain {orderNumber}");
+                if (order.Text.Contains(orderNumber))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }

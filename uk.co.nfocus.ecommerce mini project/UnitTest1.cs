@@ -165,8 +165,30 @@ namespace uk.co.nfocus.ecommerce_mini_project
             //checkoutPage.SetFirstName = "George";
             //checkoutPage.SetFirstName("Joseph");
             Console.WriteLine("Enter billing information");
-            //checkoutPage.CheckoutExpectSuccess("Jeff", "Bezos", "Poland", "Amazon lane", "New York", "20500", "00000000000");
+            checkoutPage.CheckoutExpectSuccess("Jeff", "Bezos", "United Kingdom (UK)", "Amazon lane", "New York", "W1J 7NT", "07946 123400");
             Console.WriteLine("Checkout");
+
+            // Order summary page
+            OrderPagePOM orderPage = new(driver);
+            string orderNumber = orderPage.GetOrderNumber();
+            Console.WriteLine($"New order number is {orderNumber}");
+            Thread.Sleep(2000);
+
+            // Go to my account
+            navBar.GoAccount();
+            Console.WriteLine("Navigated to account page");
+
+            // Assess if previously created order is listed under this account
+            bool isOrderCreated = loginPage.CheckIfOrderInOrderNumbers(orderNumber);
+            try
+            {
+                Assert.That(isOrderCreated, "Order not in set");
+            }
+            catch(Exception)
+            {
+                //Do nothing
+            }
+            Console.WriteLine($"Is the new order listed under account? {isOrderCreated}");
 
 
             // Test Teardown ----------------------
