@@ -100,13 +100,11 @@ namespace uk.co.nfocus.ecommerce_mini_project.POMClasses
         // Place and submit the order by clicking the place order button
         public void ClickPlaceOrder()
         {
-            Console.WriteLine("Position: " + _driver.FindElement(By.Id("payment")).GetCssValue("position"));
+            //Console.WriteLine("Position: " + _driver.FindElement(By.Id("payment")).GetCssValue("position"));
             //new WebDriverWait(_driver, TimeSpan.FromSeconds(4)).Until(drv => drv.FindElement(By.Id("payment")).GetCssValue("position")=="relative");
             //WaitForElDisplayed(_driver, By.Id("place_order"));
 
-            Console.WriteLine("Before click");
             _placeOrderButton.Click();
-            Console.WriteLine("After click");
 
             new WebDriverWait(_driver, TimeSpan.FromSeconds(4)).Until(drv => drv.Url.Contains("order"));    //Wait for order summary page to show
         }
@@ -115,6 +113,7 @@ namespace uk.co.nfocus.ecommerce_mini_project.POMClasses
 
         public void CheckoutExpectSuccess(string firstName, string lastName, string country, string street, string city, string postcode, string phoneNumber)
         {
+            // Set text field information
             SetFirstName(firstName);
             SetLastName(lastName);
             SetStreetAddress(street);
@@ -122,11 +121,25 @@ namespace uk.co.nfocus.ecommerce_mini_project.POMClasses
             SetPostcodeField(postcode);
             SetPhoneNumberField(phoneNumber);
 
+            // Select from dropdown
             SelectCounrtyDropdown(country);
 
-            Thread.Sleep(2000);
+            //Thread.Sleep(2000);
 
-            ClickPlaceOrder();
+            //Loop over button click until it is loaded onto page
+            for(int i=0; i<10; i++)
+            {
+                try
+                {
+                    //Console.WriteLine("For loop i is " + i);
+                    ClickPlaceOrder();
+                    break;
+                }
+                catch (Exception)
+                {
+                    //Do nothing
+                }
+            }
         }
     }
 }

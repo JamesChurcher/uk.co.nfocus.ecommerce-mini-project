@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
+using System.Globalization;
 
 namespace uk.co.nfocus.ecommerce_mini_project.Utilities
 {
@@ -31,6 +32,13 @@ namespace uk.co.nfocus.ecommerce_mini_project.Utilities
         public static int StringToInt(string myString)
         {
             return int.Parse(Regex.Replace(myString, "[^0-9]", ""));
+        }
+
+        // Convert a string including currency symbols to a decimal
+        // Returns decimal
+        public static decimal StringToDecimal(string myString)
+        {
+            return Decimal.Parse(myString, NumberStyles.AllowCurrencySymbol | NumberStyles.Number);
         }
 
         // Get only the numerical characters from the text of a located web element

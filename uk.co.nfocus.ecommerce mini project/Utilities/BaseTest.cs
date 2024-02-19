@@ -13,6 +13,8 @@ namespace uk.co.nfocus.ecommerce_mini_project.Utilities
     {
         protected IWebDriver driver;
 
+        //TO:DO > Environment variables
+
         [SetUp]
         protected void SetUp()
         {

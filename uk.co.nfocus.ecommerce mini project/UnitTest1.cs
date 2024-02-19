@@ -1,6 +1,7 @@
 
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.Extensions;
+using System.Globalization;
 using System.Text.RegularExpressions;
 using uk.co.nfocus.ecommerce_mini_project.POMClasses;
 using uk.co.nfocus.ecommerce_mini_project.Utilities;
@@ -10,8 +11,8 @@ namespace uk.co.nfocus.ecommerce_mini_project
 {
     internal class Tests : BaseTest
     {
-        private const double couponWorth = 0.15;
-        private const int shippingCost = 395;       //TO:DO > Get shipping cost from website dynamically
+        private const decimal couponWorth = 0.15M;
+        //private const int shippingCost = 395;       //TO:DO > Get shipping cost from website dynamically
 
         /* First test case
          * Logs in and attempts to apply discount to a cart with items in, then logs out.
@@ -62,19 +63,18 @@ namespace uk.co.nfocus.ecommerce_mini_project
             Assert.That(discountStatus, "Could not apply discount");   //Verify discount was applied
             Console.WriteLine("Applied coupon code");
 
-            // Get product price
-            int price = StringToInt(cartPage.GetCartSubtotal());
-            Console.WriteLine($"Individual price: {price}");
+            // Get price from webage
+            Decimal price = cartPage.GetCartSubtotal();
 
-            // Actual and expected discount
-            int expectedDiscount = (int)(price * couponWorth);     // Calculate expected discount amount
-            int actualDiscount = StringToInt(cartPage.GetAppliedDiscount());    // Get actual discount amount
+            // Calculate actual and expected discounts
+            Decimal expectedDiscount = price * couponWorth;         // Calculate expected discount amount
+            Decimal actualDiscount = cartPage.GetAppliedDiscount(); // Get actual discount amount
 
             //Verification
             // Assess coupon removes 15%
             try     //Verify coupon amount
             {
-                Assert.That(actualDiscount, Is.EqualTo(expectedDiscount));
+                Assert.That(actualDiscount, Is.EqualTo(expectedDiscount), "Incorrect discount applied");
             }
             catch (Exception)
             {
@@ -82,16 +82,17 @@ namespace uk.co.nfocus.ecommerce_mini_project
             }
             Console.WriteLine($"15% discount amount ->\n\tExpected: {actualDiscount}, Actual: {actualDiscount}");
 
-            // Get and Calculate actual and expected totals
-            int expectedTotal = (int)(price * (1 - couponWorth)) + shippingCost;
-            int actualTotal = StringToInt(cartPage.GetCartTotal());
-            //Thread.Sleep(4000);
-            //Console.WriteLine("The actual total is " + actualDiscount);
+            // Get shipping cost from webpage
+            Decimal shippingCost = cartPage.GetShippingCost();
+
+            // Caculate actual and expected totals
+            Decimal expectedTotal = (price * (1 - couponWorth)) + shippingCost;
+            Decimal actualTotal = cartPage.GetCartTotal();
 
             // Assess final total is correct
             try     //Verify final price
             {
-                Assert.That(actualTotal, Is.EqualTo(expectedTotal));
+                Assert.That(actualTotal, Is.EqualTo(expectedTotal), "Final total price incorrect");
             }
             catch (Exception)
             {
@@ -99,19 +100,19 @@ namespace uk.co.nfocus.ecommerce_mini_project
             }
             Console.WriteLine($"Final price ->\n\tExpected: {expectedTotal}, Actual: {actualTotal}");
 
-            // Test Teardown ----------------------
 
+            // Test Teardown ----------------------
             // Remove discount and items from cart
             cartPage.MakeCartEmpty();   //Remove the discount and products
             Console.WriteLine("Remove items from cart");
 
             // Logout
             navBar.GoAccount();
-            TestHelper.WaitForElDisplayed(driver, By.LinkText("Logout"));   //Wait for account page to load
+            WaitForElDisplayed(driver, By.LinkText("Logout"));   //Wait for account page to load
 
             //Attempt logout
             bool logoutStatus = loginPage.LogoutExpectSuccess();
-            Assert.That(logoutStatus, "Could not logout");   //Verify successful login
+            Assert.That(logoutStatus, "Could not logout");   //Verify successful logout
 
             Console.WriteLine("Logout from account");
 
@@ -162,8 +163,6 @@ namespace uk.co.nfocus.ecommerce_mini_project
 
             // Enter billing information
             CheckoutPagePOM checkoutPage = new(driver);
-            //checkoutPage.SetFirstName = "George";
-            //checkoutPage.SetFirstName("Joseph");
             Console.WriteLine("Enter billing information");
             checkoutPage.CheckoutExpectSuccess("Jeff", "Bezos", "United Kingdom (UK)", "Amazon lane", "New York", "W1J 7NT", "07946 123400");
             Console.WriteLine("Checkout");

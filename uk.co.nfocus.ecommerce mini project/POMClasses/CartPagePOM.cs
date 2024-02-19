@@ -2,6 +2,8 @@
 using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -48,12 +50,14 @@ namespace uk.co.nfocus.ecommerce_mini_project.POMClasses
         }
         private IWebElement _cartTotalLabel => _driver.FindElement(By.CssSelector(".order-total bdi"));
         private IWebElement _cartSubtotalLabel => _driver.FindElement(By.CssSelector(".cart-subtotal bdi"));
+        private IWebElement _cartShippingCostLabel => _driver.FindElement(By.CssSelector(".shipping bdi"));
 
         //Service methods
 
         //Enter discount code
         public CartPagePOM SetDiscountCode(string code)
         {
+            _discountCodeField.Clear();
             _discountCodeField.SendKeys(code);
             return this;
         }
@@ -73,23 +77,32 @@ namespace uk.co.nfocus.ecommerce_mini_project.POMClasses
             _removeFromCartButton.Click();
         }
 
-        public string GetAppliedDiscount()
+        // Returns decimal
+        public decimal GetAppliedDiscount()
         {
-            return _cartDiscountLabel.Text;
+            return StringToDecimal(_cartDiscountLabel.Text);
         }
 
-        public string GetCartSubtotal()
+        public decimal GetCartSubtotal()
         {
-            return _cartSubtotalLabel.Text;
+            return StringToDecimal(_cartSubtotalLabel.Text);
         }
 
-        public string GetCartTotal()
+        public decimal GetCartTotal()
         {
-            return _cartTotalLabel.Text;
+            return StringToDecimal(_cartTotalLabel.Text);
+        }
+
+        public decimal GetShippingCost()
+        {
+            return StringToDecimal(_cartShippingCostLabel.Text);
         }
 
         //Highlevel service methods
 
+        //Applied the given discount code to the current cart
+        //  Params  -> discountCode: The discount code to apply
+        //  Returns -> (bool) if discount code was applied successfully
         public bool ApplyDiscountExpectSuccess(string discountCode)
         {
             SetDiscountCode(discountCode);
@@ -111,9 +124,22 @@ namespace uk.co.nfocus.ecommerce_mini_project.POMClasses
         {
             ClickRemoveDiscountButton();
             //new WebDriverWait(_driver, TimeSpan.FromSeconds(3)).Until(drv => (drv.FindElements(By.LinkText("[Remove]")).Count==0));    //Wait until discount is no longer applied
-            //Console.WriteLine("Is remove item button clickable? " + _removeFromCartButton.Enabled);
+            Console.WriteLine("Is remove item button clickable? " + _removeFromCartButton.Enabled);
 
-            ClickRemoveItemButton();
+            for (int i = 0; i < 10; i++)
+            {
+                try
+                {
+                    //Console.WriteLine("For loop i is " + i);
+                    ClickRemoveItemButton();
+                    break;
+                }
+                catch (Exception)
+                {
+                    //Do nothing
+                }
+            }
+
             //new WebDriverWait(_driver, TimeSpan.FromSeconds(3)).Until(drv => !_removeFromCartButton.Displayed);    //Wait until item is no longer applied
 
             WaitForElDisplayed(_driver, By.ClassName("cart-empty"));  //Wait for empty cart to be loaded

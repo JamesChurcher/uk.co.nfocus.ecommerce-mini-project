@@ -82,7 +82,7 @@ namespace uk.co.nfocus.ecommerce_mini_project.POMClasses
                 //var logoutButton = _logoutButton;
                 return true;    //Login success
             }
-            catch (NoSuchElementException e)
+            catch (NoSuchElementException)
             {
                 return false;   //Failed login
             }
@@ -98,7 +98,7 @@ namespace uk.co.nfocus.ecommerce_mini_project.POMClasses
                 //var loginButton = _submitFormButton;
                 return true;    //Logout success
             }
-            catch (NoSuchElementException e)
+            catch (NoSuchElementException)
             {
                 return false;   //Failed logout
             }
