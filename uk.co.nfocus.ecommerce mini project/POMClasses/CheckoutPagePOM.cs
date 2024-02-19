@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
+using uk.co.nfocus.ecommerce_mini_project.Utilities;
 using static uk.co.nfocus.ecommerce_mini_project.Utilities.TestHelper;
 
 namespace uk.co.nfocus.ecommerce_mini_project.POMClasses
@@ -45,48 +47,54 @@ namespace uk.co.nfocus.ecommerce_mini_project.POMClasses
         // Set the street in the first street field
         public CheckoutPagePOM SetFirstName(string name)
         {
-            _firstNameField.Clear();
-            _firstNameField.SendKeys(name);
+            ClearAndSendToTextField(_firstNameField, name);
+            //_firstNameField.Clear();
+            //_firstNameField.SendKeys(name);
             return this;
         }
 
         // Set the street in the last street field
         public CheckoutPagePOM SetLastName(string name)
         {
-            _lastNameField.Clear();
-            _lastNameField.SendKeys(name);
+            ClearAndSendToTextField(_lastNameField, name);
+            //_lastNameField.Clear();
+            //_lastNameField.SendKeys(name);
             return this;
         }
 
         // Set the street in the street address field
         public CheckoutPagePOM SetStreetAddress(string street)
         {
-            _streetField.Clear();
-            _streetField.SendKeys(street);
+            ClearAndSendToTextField(_streetField, street);
+            //_streetField.Clear();
+            //_streetField.SendKeys(street);
             return this;
         }
 
         // Set the town or city in the city field
         public CheckoutPagePOM SetCityField(string city)
         {
-            _cityField.Clear();
-            _cityField.SendKeys(city);
+            ClearAndSendToTextField(_cityField, city);
+            //_cityField.Clear();
+            //_cityField.SendKeys(city);
             return this;
         }
 
         // Set the postcode in the postcode field
         public CheckoutPagePOM SetPostcodeField(string postcode)
         {
-            _postcodeField.Clear();
-            _postcodeField.SendKeys(postcode);
+            ClearAndSendToTextField(_postcodeField, postcode);
+            //_postcodeField.Clear();
+            //_postcodeField.SendKeys(postcode);
             return this;
         }
 
         // Set the phone number in the phone number field
         public CheckoutPagePOM SetPhoneNumberField(string phoneNumber)
         {
-            _phoneNumberField.Clear();
-            _phoneNumberField.SendKeys(phoneNumber);
+            ClearAndSendToTextField(_phoneNumberField, phoneNumber);
+            //_phoneNumberField.Clear();
+            //_phoneNumberField.SendKeys(phoneNumber);
             return this;
         }
 
@@ -100,13 +108,9 @@ namespace uk.co.nfocus.ecommerce_mini_project.POMClasses
         // Place and submit the order by clicking the place order button
         public void ClickPlaceOrder()
         {
-            //Console.WriteLine("Position: " + _driver.FindElement(By.Id("payment")).GetCssValue("position"));
-            //new WebDriverWait(_driver, TimeSpan.FromSeconds(4)).Until(drv => drv.FindElement(By.Id("payment")).GetCssValue("position")=="relative");
-            //WaitForElDisplayed(_driver, By.Id("place_order"));
-
             _placeOrderButton.Click();
-
-            new WebDriverWait(_driver, TimeSpan.FromSeconds(4)).Until(drv => drv.Url.Contains("order"));    //Wait for order summary page to show
+            WaitForUrlSubstring(_driver, "order");
+            //new WebDriverWait(_driver, TimeSpan.FromSeconds(4)).Until(drv => drv.Url.Contains("order"));    //Wait for order summary page to show
         }
 
         //Highlevel service methods
@@ -123,8 +127,6 @@ namespace uk.co.nfocus.ecommerce_mini_project.POMClasses
 
             // Select from dropdown
             SelectCounrtyDropdown(country);
-
-            //Thread.Sleep(2000);
 
             //Loop over button click until it is loaded onto page
             for(int i=0; i<10; i++)

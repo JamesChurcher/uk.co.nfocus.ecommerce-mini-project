@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using uk.co.nfocus.ecommerce_mini_project.Utilities;
+using static uk.co.nfocus.ecommerce_mini_project.Utilities.TestHelper;
 
 namespace uk.co.nfocus.ecommerce_mini_project.POMClasses
 {
@@ -62,7 +63,8 @@ namespace uk.co.nfocus.ecommerce_mini_project.POMClasses
         public void ClickOrders()
         {
             _ordersButton.Click();
-            new WebDriverWait(_driver, TimeSpan.FromSeconds(4)).Until(drv => drv.Url.Contains("my-account/order"));    //Wait for order summary page to show
+            WaitForUrlSubstring(_driver, "my-account/orders");
+            //new WebDriverWait(_driver, TimeSpan.FromSeconds(4)).Until(drv => drv.Url.Contains("my-account/orders"));    //Wait for order summary page to show
         }
 
         //Higher level helpers
@@ -78,8 +80,7 @@ namespace uk.co.nfocus.ecommerce_mini_project.POMClasses
 
             try
             {
-                TestHelper.WaitForElDisplayed(_driver, By.LinkText("Logout"));  //Wait until login has completed
-                //var logoutButton = _logoutButton;
+                WaitForElDisplayed(_driver, By.LinkText("Logout"));  //Wait until login has completed
                 return true;    //Login success
             }
             catch (NoSuchElementException)
@@ -88,14 +89,15 @@ namespace uk.co.nfocus.ecommerce_mini_project.POMClasses
             }
         }
 
+        //Logout of the currently logged in account
+        //  Returns -> (bool) if logout was successful status
         public bool LogoutExpectSuccess()
         {
             ClickLogout();
 
             try
             {
-                TestHelper.WaitForElDisplayed(_driver, By.Name("login"));  //Wait until logout has completed
-                //var loginButton = _submitFormButton;
+                WaitForElDisplayed(_driver, By.Name("login"));  //Wait until logout has completed
                 return true;    //Logout success
             }
             catch (NoSuchElementException)

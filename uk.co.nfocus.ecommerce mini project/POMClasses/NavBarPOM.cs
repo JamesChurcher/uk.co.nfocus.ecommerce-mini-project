@@ -35,6 +35,7 @@ namespace uk.co.nfocus.ecommerce_mini_project.POMClasses
         public void GoHome()
         {
             _homeButton.Click();
+            WaitForElDisplayed(_driver, By.ClassName("entry-title")); //TO:DO > Change to wait for url //Wait for login page to load
         }
 
         // Go to shop page
@@ -45,52 +46,35 @@ namespace uk.co.nfocus.ecommerce_mini_project.POMClasses
         }
 
         // Go to cart page
-        public void GoCart(bool isCartEmpty)
+        public void GoCart()
         {
             _cartButton.Click();
-
-            //if (isCartEmpty)
-            //{
-            //    try
-            //    {
-            //        TestHelper.WaitForElDisplayed(_driver, By.LinkText("Return to shop"));  //Wait until cart page has loaded
-            //    }
-            //    catch (NoSuchElementException e)
-            //    {
-
-            //    }
-            //}
-            //else
-            //{
-            //    try
-            //    {
-            //        TestHelper.WaitForElDisplayed(_driver, By.LinkText("Proceed to checkout"));  //Wait until cart page has loaded
-            //    }
-            //    catch (NoSuchElementException e)
-            //    {
-
-            //    }
-            //}
+            WaitForUrlSubstring(_driver, "cart");
+            //WaitForElDisplayed(_driver, By.ClassName("entry-title")); //TO:DO > Change to wait for url //Wait for login page to load
         }
 
         // Go to checkout page
         public void GoCheckout()
         {
             _checkoutButton.Click();
-            WaitForElDisplayed(_driver, By.ClassName("entry-title")); //TO:DO > Change to wait for url //Wait for login page to load
+            WaitForUrlSubstring(_driver, "checkout");
+            //WaitForElDisplayed(_driver, By.ClassName("entry-title")); //TO:DO > Change to wait for url //Wait for login page to load
         }
 
         // Go to account page
         public void GoAccount()
         {
             _accountButton.Click();
-            WaitForElDisplayed(_driver, By.ClassName("entry-title")); //TO:DO > Change to wait for url //Wait for login page to load
+            WaitForUrlSubstring(_driver, "my-account");
+            //WaitForElDisplayed(_driver, By.ClassName("entry-title")); //TO:DO > Change to wait for url //Wait for login page to load
         }
 
         // Go to blog page
         public void GoBlog()
         {
             _blogButton.Click();
+            WaitForUrlSubstring(_driver, "blog");
+            //WaitForElDisplayed(_driver, By.ClassName("entry-title")); //TO:DO > Change to wait for url //Wait for login page to load
         }
     }
 }

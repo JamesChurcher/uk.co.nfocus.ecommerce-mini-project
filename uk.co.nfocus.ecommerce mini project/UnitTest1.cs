@@ -53,7 +53,8 @@ namespace uk.co.nfocus.ecommerce_mini_project
             Console.WriteLine("Add item to cart");
 
             // View cart
-            navBar.GoCart(isCartEmpty: false);
+            //navBar.GoCart(isCartEmpty: false);
+            navBar.GoCart();
             WaitForElDisplayed(driver, By.LinkText("Proceed to checkout"));  //Wait until cart page has loaded
             Console.WriteLine("Navigated to cart");
 
@@ -80,7 +81,7 @@ namespace uk.co.nfocus.ecommerce_mini_project
             {
                 //Do nothing
             }
-            Console.WriteLine($"15% discount amount ->\n\tExpected: {actualDiscount}, Actual: {actualDiscount}");
+            Console.WriteLine($"15% discount amount ->\n\tExpected: £{actualDiscount}, Actual: £{actualDiscount}");
 
             // Get shipping cost from webpage
             Decimal shippingCost = cartPage.GetShippingCost();
@@ -98,7 +99,7 @@ namespace uk.co.nfocus.ecommerce_mini_project
             {
                 //Do nothing
             }
-            Console.WriteLine($"Final price ->\n\tExpected: {expectedTotal}, Actual: {actualTotal}");
+            Console.WriteLine($"Final price ->\n\tExpected: £{expectedTotal}, Actual: £{actualTotal}");
 
 
             // Test Teardown ----------------------
@@ -123,8 +124,8 @@ namespace uk.co.nfocus.ecommerce_mini_project
          * Logs in and attempts to checkout an item, then logs out.
          * Tests login/logout, billing information form, checkout functionality, order creation.
          */
-        [TestCase("newexampleemail@email.com", "MyPassword12345@", "edgewords")]
-        public void TestCase2(string testUsername, string testPassword, string testDiscountCode)
+        [TestCase("newexampleemail@email.com", "MyPassword12345@", "Jeff", "Bezos", "United Kingdom (UK)", "Amazon lane", "New York", "W1J 7NT", "07946 123400")]
+        public void TestCase2(string testUsername, string testPassword, string firstName, string lastName, string country, string street, string city, string postcode, string phoneNumber)
         {
             // Go to shop url
             driver.Navigate().GoToUrl("https://www.edgewordstraining.co.uk/demo-site/");
@@ -164,14 +165,15 @@ namespace uk.co.nfocus.ecommerce_mini_project
             // Enter billing information
             CheckoutPagePOM checkoutPage = new(driver);
             Console.WriteLine("Enter billing information");
-            checkoutPage.CheckoutExpectSuccess("Jeff", "Bezos", "United Kingdom (UK)", "Amazon lane", "New York", "W1J 7NT", "07946 123400");
+            //checkoutPage.CheckoutExpectSuccess("Jeff", "Bezos", "United Kingdom (UK)", "Amazon lane", "New York", "W1J 7NT", "07946 123400");
+            checkoutPage.CheckoutExpectSuccess(firstName, lastName, country, street, city, postcode, phoneNumber);
             Console.WriteLine("Checkout");
 
             // Order summary page
             OrderPagePOM orderPage = new(driver);
             string orderNumber = orderPage.GetOrderNumber();
             Console.WriteLine($"New order number is {orderNumber}");
-            Thread.Sleep(2000);
+            //Thread.Sleep(2000);
 
             // Go to my account
             navBar.GoAccount();
@@ -194,7 +196,7 @@ namespace uk.co.nfocus.ecommerce_mini_project
 
             // Logout
             navBar.GoAccount();
-            TestHelper.WaitForElDisplayed(driver, By.LinkText("Logout"));   //Wait for account page to load
+            WaitForElDisplayed(driver, By.LinkText("Logout"));   //Wait for account page to load
 
             //Attempt logout
             bool logoutStatus = loginPage.LogoutExpectSuccess();

@@ -23,6 +23,13 @@ namespace uk.co.nfocus.ecommerce_mini_project.Utilities
             wait.Until(drv => drv.FindElement(locator).Displayed);
         }
 
+        //Explicit wait for url to contain substring
+        public static void WaitForUrlSubstring(IWebDriver driver, string urlSubstring)
+        {
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(4));
+            wait.Until(drv => drv.Url.Contains(urlSubstring));
+        }
+
         //--------------------------------------------------
         //TO:DO > Write wait method for aleady given element
         //--------------------------------------------------
@@ -39,6 +46,13 @@ namespace uk.co.nfocus.ecommerce_mini_project.Utilities
         public static decimal StringToDecimal(string myString)
         {
             return Decimal.Parse(myString, NumberStyles.AllowCurrencySymbol | NumberStyles.Number);
+        }
+
+        // Clears then sends string to given text field
+        public static void ClearAndSendToTextField(IWebElement element, string myString)
+        {
+            element.Clear();
+            element.SendKeys(myString);
         }
 
         // Get only the numerical characters from the text of a located web element
