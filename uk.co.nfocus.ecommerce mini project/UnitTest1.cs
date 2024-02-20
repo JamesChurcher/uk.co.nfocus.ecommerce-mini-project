@@ -25,6 +25,8 @@ namespace uk.co.nfocus.ecommerce_mini_project
             driver.Navigate().GoToUrl("https://www.edgewordstraining.co.uk/demo-site/");
             Console.WriteLine("Navigated to site");
 
+            //TakeScreenshot(driver, "name");
+
             // Dismiss popup
             driver.FindElement(By.LinkText("Dismiss")).Click();
 
@@ -77,7 +79,7 @@ namespace uk.co.nfocus.ecommerce_mini_project
             {
                 Assert.That(actualDiscount, Is.EqualTo(expectedDiscount), "Incorrect discount applied");
             }
-            catch (Exception)
+            catch (Exception)   //TO:DO > Catch Assert exceptions only
             {
                 //Do nothing
             }
@@ -95,7 +97,7 @@ namespace uk.co.nfocus.ecommerce_mini_project
             {
                 Assert.That(actualTotal, Is.EqualTo(expectedTotal), "Final total price incorrect");
             }
-            catch (Exception)
+            catch (Exception)   //TO:DO > Catch Assert exceptions only
             {
                 //Do nothing
             }
@@ -124,8 +126,8 @@ namespace uk.co.nfocus.ecommerce_mini_project
          * Logs in and attempts to checkout an item, then logs out.
          * Tests login/logout, billing information form, checkout functionality, order creation.
          */
-        [TestCase("newexampleemail@email.com", "MyPassword12345@", "Jeff", "Bezos", "United Kingdom (UK)", "Amazon lane", "New York", "W1J 7NT", "07946 123400")]
-        public void TestCase2(string testUsername, string testPassword, string firstName, string lastName, string country, string street, string city, string postcode, string phoneNumber)
+        [TestCase("newexampleemail@email.com", "MyPassword12345@", "Jeff", "Bezos", "United Kingdom (UK)", "Amazon lane", "New York", "W1J 7NT", "07946 123400", PaymentMethod.cheque)]
+        public void TestCase2(string testUsername, string testPassword, string firstName, string lastName, string country, string street, string city, string postcode, string phoneNumber, PaymentMethod paymentMethod)
         {
             // Go to shop url
             driver.Navigate().GoToUrl("https://www.edgewordstraining.co.uk/demo-site/");
@@ -165,8 +167,7 @@ namespace uk.co.nfocus.ecommerce_mini_project
             // Enter billing information
             CheckoutPagePOM checkoutPage = new(driver);
             Console.WriteLine("Enter billing information");
-            //checkoutPage.CheckoutExpectSuccess("Jeff", "Bezos", "United Kingdom (UK)", "Amazon lane", "New York", "W1J 7NT", "07946 123400");
-            checkoutPage.CheckoutExpectSuccess(firstName, lastName, country, street, city, postcode, phoneNumber);
+            checkoutPage.CheckoutExpectSuccess(firstName, lastName, country, street, city, postcode, phoneNumber, paymentMethod);
             Console.WriteLine("Checkout");
 
             // Order summary page
@@ -185,7 +186,7 @@ namespace uk.co.nfocus.ecommerce_mini_project
             {
                 Assert.That(isOrderCreated, "Order not in set");
             }
-            catch(Exception)
+            catch(Exception)   //TO:DO > Catch Assert exceptions only
             {
                 //Do nothing
             }

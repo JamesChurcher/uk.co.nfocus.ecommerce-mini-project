@@ -39,6 +39,10 @@ namespace uk.co.nfocus.ecommerce_mini_project.POMClasses
         private IWebElement _cityField => _driver.FindElement(By.Id("billing_city"));
         private IWebElement _postcodeField => _driver.FindElement(By.Id("billing_postcode"));
         private IWebElement _phoneNumberField => _driver.FindElement(By.Id("billing_phone"));
+        //private IWebElement _paymentMethodRadio => _driver.FindElement(By.CssSelector("label[for=\"payment_method_cheque\"]"))
+        private IWebElement _paymentMethodRadio => _driver.FindElement(By.ClassName("payment_methods"));    //Payment method parent element
+        //private IWebElement _paymentMethodRadioCheck => _driver.FindElement(By.CssSelector(".payment_method_cheque > label"));
+        //private IWebElement _paymentMethodRadioCOD => _driver.FindElement(By.CssSelector(".payment_method_cod > label"));
         private IWebElement _placeOrderButton => _driver.FindElement(By.Id("place_order"));
         //private IWebElement _placeOrderButton => _driver.FindElement(By.LinkText("Place order"));
 
@@ -105,17 +109,45 @@ namespace uk.co.nfocus.ecommerce_mini_project.POMClasses
             return this;
         }
 
+        // Select payment method
+        public CheckoutPagePOM SelectPaymentMethod(PaymentMethod method)
+        {
+            //Create locator from input enum for which payment method to select
+            var locator = By.CssSelector($".payment_method_{method.ToString()} > label");
+
+            //Loop over radio click until it is loaded
+            for (int i = 0; i < 15; i++)
+            {
+                try
+                {
+                    //Console.WriteLine("For loop i is " + i);
+
+                    //Find the payment method and click
+                    _paymentMethodRadio.FindElement(By.CssSelector($".payment_method_{PaymentMethod.cod} > label")).Click();
+
+                    break;
+                }
+                catch (Exception)   //TO:DO > Change to only find stale element exceptions
+                {
+                    Thread.Sleep(150);
+                    //Do nothing
+                }
+            }
+
+            return this;
+        }
+
         // Place and submit the order by clicking the place order button
         public void ClickPlaceOrder()
         {
             _placeOrderButton.Click();
-            WaitForUrlSubstring(_driver, "order");
-            //new WebDriverWait(_driver, TimeSpan.FromSeconds(4)).Until(drv => drv.Url.Contains("order"));    //Wait for order summary page to show
+            WaitForUrlSubstring(_driver, "order");  //Wait for order summary page to show
+            //new WebDriverWait(_driver, TimeSpan.FromSeconds(4)).Until(drv => drv.Url.Contains("order"));
         }
 
         //Highlevel service methods
 
-        public void CheckoutExpectSuccess(string firstName, string lastName, string country, string street, string city, string postcode, string phoneNumber)
+        public void CheckoutExpectSuccess(string firstName, string lastName, string country, string street, string city, string postcode, string phoneNumber, PaymentMethod paymentMethod)
         {
             // Set text field information
             SetFirstName(firstName);
@@ -128,17 +160,23 @@ namespace uk.co.nfocus.ecommerce_mini_project.POMClasses
             // Select from dropdown
             SelectCounrtyDropdown(country);
 
+            // Select payment method
+            SelectPaymentMethod(paymentMethod);
+
+            //Thread.Sleep(3000);
+
             //Loop over button click until it is loaded onto page
-            for(int i=0; i<10; i++)
+            for(int i=0; i<15; i++)
             {
                 try
                 {
-                    //Console.WriteLine("For loop i is " + i);
+                    Console.WriteLine("For loop i is " + i);
                     ClickPlaceOrder();
                     break;
                 }
-                catch (Exception)
+                catch (Exception)   //TO:DO > Change to only find stale element exceptions
                 {
+                    Thread.Sleep(150);
                     //Do nothing
                 }
             }

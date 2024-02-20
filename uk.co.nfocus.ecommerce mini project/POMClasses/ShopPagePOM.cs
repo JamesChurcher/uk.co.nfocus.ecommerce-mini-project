@@ -24,7 +24,7 @@ namespace uk.co.nfocus.ecommerce_mini_project.POMClasses
         //Locators
         //private IWebElement _usernameField => _driver.FindElement(By.LinkText("View cart"));
         private IReadOnlyList<IWebElement> _addToCartButtons => _driver.FindElements(By.LinkText("Add to cart"));
-
+        
         //Service methods
 
         //Click the add to basket button

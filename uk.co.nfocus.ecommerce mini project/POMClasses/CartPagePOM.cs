@@ -36,7 +36,7 @@ namespace uk.co.nfocus.ecommerce_mini_project.POMClasses
             }
         }
         private IWebElement _applyDiscountButton => _driver.FindElement(By.Name("apply_coupon"));
-        private IWebElement _removeFromCartButton => _driver.FindElement(By.LinkText("×"));
+        private IWebElement _removeFromCartButton => _driver.FindElement(By.LinkText("×"));     //TO:DO > Maybe change to be more robust
         private IWebElement _removeDiscountButton => _driver.FindElement(By.LinkText("[Remove]"));
 
         //private IWebElement _cartDiscountLabel => _driver.FindElement(By.CssSelector(".cart-discount .amount"));    //TO:DO > Apply wait
@@ -123,22 +123,31 @@ namespace uk.co.nfocus.ecommerce_mini_project.POMClasses
         public void MakeCartEmpty()
         {
             ClickRemoveDiscountButton();
-            //new WebDriverWait(_driver, TimeSpan.FromSeconds(3)).Until(drv => (drv.FindElements(By.LinkText("[Remove]")).Count==0));    //Wait until discount is no longer applied
-            Console.WriteLine("Is remove item button clickable? " + _removeFromCartButton.Enabled);
+            //Console.WriteLine("Is remove item button clickable? " + _removeFromCartButton.Enabled);
 
-            for (int i = 0; i < 10; i++)
-            {
-                try
-                {
-                    //Console.WriteLine("For loop i is " + i);
-                    ClickRemoveItemButton();
-                    break;
-                }
-                catch (Exception)
-                {
-                    //Do nothing
-                }
-            }
+            //Wait for banner confirming discount removal to load
+            //new WebDriverWait(_driver, TimeSpan.FromSeconds(4)).Until(drv => drv.FindElement(By.ClassName("woocommerce-message")).Text.Contains("Coupon has been removed."));
+
+            new WebDriverWait(_driver, TimeSpan.FromSeconds(4)).Until(drv => (drv.FindElements(By.LinkText("[Remove]")).Count == 0));    //Wait until discount is no longer applied
+
+            ClickRemoveItemButton();
+
+            //for (int i = 0; i < 10; i++)
+            //{
+            //    try
+            //    {
+            //        Console.WriteLine("For loop i is " + i);
+            //        Thread.Sleep(1000);
+            //        ClickRemoveItemButton();
+            //        break;
+            //    }
+            //    catch (Exception)
+            //    {
+            //        Thread.Sleep(100);
+            //        Console.WriteLine("Caught exception " + i);
+            //        //Do nothing
+            //    }
+            //}
 
             //new WebDriverWait(_driver, TimeSpan.FromSeconds(3)).Until(drv => !_removeFromCartButton.Displayed);    //Wait until item is no longer applied
 
