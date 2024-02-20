@@ -24,24 +24,37 @@ namespace uk.co.nfocus.ecommerce_mini_project.Utilities
         [SetUp]
         protected void SetUp()
         {
+            // Get environmet variables
+            string browser = Environment.GetEnvironmentVariable("BROWSER");
+            Console.WriteLine($"Browser is set to: {browser}");
+
+            //string runsettings = TestContext.Parameters["WebAppUrl"];
+            //Console.WriteLine("The runsettings param was " + runsettings);
+
             // Set up the driver instance
             //driver = new EdgeDriver();
 
-            string browser = "edge";
+            //string browser = "edge";
+
+            if (browser == null)
+            {
+                browser = "edge";
+                Console.WriteLine("BROWSER env not set: Setting default to edge");
+            }
 
             //Instantiate a browser based on variable
             switch (browser)
             {
-                case "edge":
-                    driver = new EdgeDriver();
-                    break;
                 case "firefox":
                     driver = new FirefoxDriver();
                     break;
-                default:
+                case "chrome":
                     ChromeOptions options = new ChromeOptions();
                     options.BrowserVersion = "canary"; //stable/beta/dev/canary/num
                     driver = new ChromeDriver(options);
+                    break;
+                default:
+                    driver = new EdgeDriver();
                     break;
             }
 
