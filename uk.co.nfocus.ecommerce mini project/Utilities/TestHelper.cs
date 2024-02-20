@@ -15,7 +15,7 @@ namespace uk.co.nfocus.ecommerce_mini_project.Utilities
     {
         //private static string _screenshotPath = @"C:\Users\JamesChurcher\OneDrive - nFocus Limited\Pictures\Screenshots\";
         //public static string ScreenshotPath => _screenshotPath;
-        private static string _screenshotPath = Directory.GetCurrentDirectory() + @"\..\..\..\Screenshots";
+        private static string _screenshotPath = Directory.GetCurrentDirectory() + @"\..\..\..\Screenshots\";
 
         //Enums for payment methods
         public enum PaymentMethod
@@ -64,13 +64,28 @@ namespace uk.co.nfocus.ecommerce_mini_project.Utilities
         }
 
         // Take screenshot
-        public static void TakeScreenshot(IWebDriver driver, string name)
+        public static void TakeScreenshot(IWebDriver driver, string name, string description)
         {
-            //Console.WriteLine($"Screenshot path: {_screenshotPath}");
+            var path = _screenshotPath + name + ".png";
 
             ITakesScreenshot ssdriver = driver as ITakesScreenshot;
             Screenshot screenshot = ssdriver.GetScreenshot();
-            screenshot.SaveAsFile(_screenshotPath + name + ".png");
+            screenshot.SaveAsFile(path);
+
+            TestContext.AddTestAttachment(path, description);
+        }
+
+        // Scroll the given element into view
+        public static void ScrollToElement(IWebDriver driver, IWebElement element)
+        {
+            // Check if the driver supports JS
+            IJavaScriptExecutor? jsdriver = driver as IJavaScriptExecutor;
+
+            if(jsdriver != null)
+            {
+                Thread.Sleep(1500);
+                jsdriver.ExecuteScript("arguments[0].scrollIntoView(false)", element);   // Scroll to element
+            }
         }
 
         // Get only the numerical characters from the text of a located web element

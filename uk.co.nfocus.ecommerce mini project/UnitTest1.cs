@@ -94,6 +94,9 @@ namespace uk.co.nfocus.ecommerce_mini_project
             }
             Console.WriteLine($"Final price ->\n\tExpected: £{expectedTotal}, Actual: £{actualTotal}");
 
+            // Screenshot the cart summary
+            ScrollToElement(driver, driver.FindElement(By.ClassName("order-total")));
+            TakeScreenshot(driver, "TestCase1_CartSummary", "Cart summary page");
 
             // Test Teardown ----------------------
             // Remove discount and items from cart
@@ -164,6 +167,9 @@ namespace uk.co.nfocus.ecommerce_mini_project
             Console.WriteLine($"New order number is {orderNumber}");
             //Thread.Sleep(2000);
 
+            // Screenshot order summary page
+            TakeScreenshot(driver, "TestCase2_OrderSummary", "New Order summary page");
+
             // Go to my account
             navBar.GoAccount();
             Console.WriteLine("Navigated to account page");
@@ -180,6 +186,9 @@ namespace uk.co.nfocus.ecommerce_mini_project
             }
             Console.WriteLine($"Is the new order listed under account? {isOrderCreated}");
 
+
+            // Screenshot listed account orders
+            TakeScreenshot(driver, "TestCase2_AccountOrderList", "List of recent account orders");
 
             // Test Teardown ----------------------
 

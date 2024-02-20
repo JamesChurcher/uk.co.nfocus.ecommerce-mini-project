@@ -361,3 +361,6 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/uk.co.nfocus.ecommerce mini project/Screenshots
+/uk.co.nfocus.ecommerce mini project/Results
+/.editorconfig

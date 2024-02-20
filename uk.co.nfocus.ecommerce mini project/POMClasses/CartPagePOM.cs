@@ -36,7 +36,8 @@ namespace uk.co.nfocus.ecommerce_mini_project.POMClasses
             }
         }
         private IWebElement _applyDiscountButton => _driver.FindElement(By.Name("apply_coupon"));
-        private IWebElement _removeFromCartButton => _driver.FindElement(By.LinkText("×"));     //TO:DO > Maybe change to be more robust
+        //private IWebElement _removeFromCartButton => _driver.FindElement(By.LinkText("×"));     //TO:DO > Maybe change to be more robust
+        private IWebElement _removeFromCartButton => _driver.FindElement(By.ClassName("remove"));
         private IWebElement _removeDiscountButton => _driver.FindElement(By.LinkText("[Remove]"));
 
         //private IWebElement _cartDiscountLabel => _driver.FindElement(By.CssSelector(".cart-discount .amount"));    //TO:DO > Apply wait

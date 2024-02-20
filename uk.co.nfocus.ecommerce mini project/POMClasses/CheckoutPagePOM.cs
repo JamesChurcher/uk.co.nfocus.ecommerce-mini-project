@@ -123,7 +123,7 @@ namespace uk.co.nfocus.ecommerce_mini_project.POMClasses
                     //Console.WriteLine("For loop i is " + i);
 
                     //Find the payment method and click
-                    _paymentMethodRadio.FindElement(By.CssSelector($".payment_method_{PaymentMethod.cod} > label")).Click();
+                    _paymentMethodRadio.FindElement(By.CssSelector($".payment_method_{method} > label")).Click();
 
                     break;
                 }
@@ -166,11 +166,11 @@ namespace uk.co.nfocus.ecommerce_mini_project.POMClasses
             //Thread.Sleep(3000);
 
             //Loop over button click until it is loaded onto page
-            for(int i=0; i<15; i++)
+            for (int i=0; i<15; i++)
             {
                 try
                 {
-                    Console.WriteLine("For loop i is " + i);
+                    //Console.WriteLine("For loop i is " + i);
                     ClickPlaceOrder();
                     break;
                 }
