@@ -21,15 +21,6 @@ namespace uk.co.nfocus.ecommerce_mini_project
         [TestCase("newexampleemail@email.com", "MyPassword12345@", "edgewords")]
         public void TestCase1(string testUsername, string testPassword, string testDiscountCode)
         {
-            // Go to shop url
-            driver.Navigate().GoToUrl("https://www.edgewordstraining.co.uk/demo-site/");
-            Console.WriteLine("Navigated to site");
-
-            //TakeScreenshot(driver, "name");
-
-            // Dismiss popup
-            driver.FindElement(By.LinkText("Dismiss")).Click();
-
             // Create NavBar POM instance
             NavBarPOM navBar = new(driver);
 
@@ -129,13 +120,6 @@ namespace uk.co.nfocus.ecommerce_mini_project
         [TestCase("newexampleemail@email.com", "MyPassword12345@", "Jeff", "Bezos", "United Kingdom (UK)", "Amazon lane", "New York", "W1J 7NT", "07946 123400", PaymentMethod.cheque)]
         public void TestCase2(string testUsername, string testPassword, string firstName, string lastName, string country, string street, string city, string postcode, string phoneNumber, PaymentMethod paymentMethod)
         {
-            // Go to shop url
-            driver.Navigate().GoToUrl("https://www.edgewordstraining.co.uk/demo-site/");
-            Console.WriteLine("Navigated to site");
-
-            // Dismiss popup
-            driver.FindElement(By.LinkText("Dismiss")).Click();
-
             // Create NavBar POM instance
             NavBarPOM navBar = new(driver);
 
@@ -159,6 +143,10 @@ namespace uk.co.nfocus.ecommerce_mini_project
             ShopPagePOM shopPage = new(driver);
             shopPage.ClickAddToBasket();
             Console.WriteLine("Add item to cart");
+
+            // View the cart
+            navBar.GoCart();
+            Console.WriteLine("Viewied cart");
 
             // Go to checkout
             navBar.GoCheckout();

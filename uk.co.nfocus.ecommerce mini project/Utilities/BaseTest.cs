@@ -27,7 +27,7 @@ namespace uk.co.nfocus.ecommerce_mini_project.Utilities
             // Set up the driver instance
             //driver = new EdgeDriver();
 
-            string browser = "firefox";
+            string browser = "edge";
 
             //Instantiate a browser based on variable
             switch (browser)
@@ -49,6 +49,13 @@ namespace uk.co.nfocus.ecommerce_mini_project.Utilities
             //driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(4);
             //Do not use in production tests - has undefined behaviour.
             //Use WebDriverWaits at key synchronisation points instead
+
+            // Go to shop url
+            driver.Navigate().GoToUrl("https://www.edgewordstraining.co.uk/demo-site/");
+            Console.WriteLine("Navigated to site");
+
+            // Dismiss popup
+            driver.FindElement(By.LinkText("Dismiss")).Click();
         }
 
         [TearDown]
