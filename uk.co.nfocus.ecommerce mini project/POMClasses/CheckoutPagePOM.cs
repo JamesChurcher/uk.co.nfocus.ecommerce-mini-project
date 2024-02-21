@@ -127,10 +127,9 @@ namespace uk.co.nfocus.ecommerce_mini_project.POMClasses
 
                     break;
                 }
-                catch (StaleElementReferenceException)   //TODODONE > Change to only find stale element exceptions
+                catch (Exception)   //Catches StaleElementReferenceException and ElementClickInterceptedException
                 {
-                    Thread.Sleep(150);
-                    //Do nothing
+                    Thread.Sleep(150);  //Pause while page loads
                 }
                 // TODO > Maybe catch no element exception too?
             }
@@ -175,10 +174,9 @@ namespace uk.co.nfocus.ecommerce_mini_project.POMClasses
                     ClickPlaceOrder();
                     break;
                 }
-                catch (StaleElementReferenceException)   //TODODONE > Change to only find stale element exceptions
+                catch (Exception)      //Catch if the place order button has not loaded yet
                 {
-                    Thread.Sleep(150);
-                    //Do nothing
+                    Thread.Sleep(150);  //Pause while page loads
                 }
                 // TODO > Maybe catch no element exception too?
             }
