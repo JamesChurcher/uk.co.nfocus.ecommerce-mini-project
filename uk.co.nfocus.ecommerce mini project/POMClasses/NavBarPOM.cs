@@ -35,7 +35,7 @@ namespace uk.co.nfocus.ecommerce_mini_project.POMClasses
         public void GoHome()
         {
             _homeButton.Click();
-            WaitForElDisplayed(_driver, By.ClassName("entry-title")); //TO:DO > Change to wait for url //Wait for login page to load
+            WaitForElDisplayed(_driver, By.ClassName("entry-title"));   //Wait for login page to load
         }
 
         // Go to shop page
@@ -49,32 +49,28 @@ namespace uk.co.nfocus.ecommerce_mini_project.POMClasses
         public void GoCart()
         {
             _cartButton.Click();
-            WaitForUrlSubstring(_driver, "cart");
-            //WaitForElDisplayed(_driver, By.ClassName("entry-title")); //TO:DO > Change to wait for url //Wait for login page to load
+            WaitForUrlSubstring(_driver, "cart");   //Wait for login page to load
         }
 
         // Go to checkout page
         public void GoCheckout()
         {
             _checkoutButton.Click();
-            WaitForUrlSubstring(_driver, "checkout");
-            //WaitForElDisplayed(_driver, By.ClassName("entry-title")); //TO:DO > Change to wait for url //Wait for login page to load
+            WaitForUrlSubstring(_driver, "checkout");   //Wait for login page to load
         }
 
         // Go to account page
         public void GoAccount()
         {
             _accountButton.Click();
-            WaitForUrlSubstring(_driver, "my-account");
-            //WaitForElDisplayed(_driver, By.ClassName("entry-title")); //TO:DO > Change to wait for url //Wait for login page to load
+            WaitForUrlSubstring(_driver, "my-account"); //Wait for login page to load
         }
 
         // Go to blog page
         public void GoBlog()
         {
             _blogButton.Click();
-            WaitForUrlSubstring(_driver, "blog");
-            //WaitForElDisplayed(_driver, By.ClassName("entry-title")); //TO:DO > Change to wait for url //Wait for login page to load
+            WaitForUrlSubstring(_driver, "blog");   //Wait for login page to load
         }
     }
 }

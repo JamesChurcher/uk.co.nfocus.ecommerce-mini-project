@@ -127,11 +127,12 @@ namespace uk.co.nfocus.ecommerce_mini_project.POMClasses
 
                     break;
                 }
-                catch (Exception)   //TO:DO > Change to only find stale element exceptions
+                catch (StaleElementReferenceException)   //TODODONE > Change to only find stale element exceptions
                 {
                     Thread.Sleep(150);
                     //Do nothing
                 }
+                // TODO > Maybe catch no element exception too?
             }
 
             return this;
@@ -174,11 +175,12 @@ namespace uk.co.nfocus.ecommerce_mini_project.POMClasses
                     ClickPlaceOrder();
                     break;
                 }
-                catch (Exception)   //TO:DO > Change to only find stale element exceptions
+                catch (StaleElementReferenceException)   //TODODONE > Change to only find stale element exceptions
                 {
                     Thread.Sleep(150);
                     //Do nothing
                 }
+                // TODO > Maybe catch no element exception too?
             }
         }
     }

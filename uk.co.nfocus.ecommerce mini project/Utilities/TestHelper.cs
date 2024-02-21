@@ -39,7 +39,7 @@ namespace uk.co.nfocus.ecommerce_mini_project.Utilities
         }
 
         //--------------------------------------------------
-        //TO:DO > Write wait method for aleady given element
+        //TODO > Write wait method for aleady given element
         //--------------------------------------------------
 
         // Remove all non numerical characters from a string
@@ -83,7 +83,7 @@ namespace uk.co.nfocus.ecommerce_mini_project.Utilities
 
             if(jsdriver != null)
             {
-                Thread.Sleep(1500);
+                Thread.Sleep(1000);     // Could not get page to scroll without sleeping
                 jsdriver.ExecuteScript("arguments[0].scrollIntoView(false)", element);   // Scroll to element
             }
         }

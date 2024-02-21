@@ -26,8 +26,8 @@ namespace uk.co.nfocus.ecommerce_mini_project.POMClasses
         //Locators
         private IWebElement _usernameField => _driver.FindElement(By.Id("username"));
         private IWebElement _passwordField => _driver.FindElement(By.Id("password"));
-        private IWebElement _submitFormButton => _driver.FindElement(By.Name("login"));     //TO:DO > Add waits
-        private IWebElement _logoutButton => _driver.FindElement(By.LinkText("Logout"));    //TO:DO > Add waits
+        private IWebElement _submitFormButton => _driver.FindElement(By.Name("login"));     //TODO > Add waits
+        private IWebElement _logoutButton => _driver.FindElement(By.LinkText("Logout"));    //TODO > Add waits
         private IWebElement _ordersButton => _driver.FindElement(By.LinkText("Orders"));
         private IReadOnlyList<IWebElement> _allOrderNumbers => _driver.FindElements(By.PartialLinkText("#"));
 

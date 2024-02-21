@@ -36,11 +36,11 @@ namespace uk.co.nfocus.ecommerce_mini_project.POMClasses
             }
         }
         private IWebElement _applyDiscountButton => _driver.FindElement(By.Name("apply_coupon"));
-        //private IWebElement _removeFromCartButton => _driver.FindElement(By.LinkText("×"));     //TO:DO > Maybe change to be more robust
+        //private IWebElement _removeFromCartButton => _driver.FindElement(By.LinkText("×"));     //TODO > Maybe change to be more robust
         private IWebElement _removeFromCartButton => _driver.FindElement(By.ClassName("remove"));
         private IWebElement _removeDiscountButton => _driver.FindElement(By.LinkText("[Remove]"));
 
-        //private IWebElement _cartDiscountLabel => _driver.FindElement(By.CssSelector(".cart-discount .amount"));    //TO:DO > Apply wait
+        //private IWebElement _cartDiscountLabel => _driver.FindElement(By.CssSelector(".cart-discount .amount"));    //TODO > Apply wait
         private IWebElement _cartDiscountLabel
         {
             get
@@ -111,7 +111,8 @@ namespace uk.co.nfocus.ecommerce_mini_project.POMClasses
 
             try
             {
-                WaitForElDisplayed(_driver, By.CssSelector(".cart-discount .amount"));  //Wait until login has completed
+                //WaitForElDisplayed(_driver, By.CssSelector(".cart-discount .amount"));  //Wait until discount has been applied
+                WaitForElDisplayed(_driver, By.LinkText("[Remove]"));  //Wait until discount has been applied
                 return true;    //Coupon applied
             }
             catch (NoSuchElementException e)

@@ -1,6 +1,7 @@
 
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.Extensions;
+using OpenQA.Selenium.Support.UI;
 using System.Globalization;
 using System.Text.RegularExpressions;
 using uk.co.nfocus.ecommerce_mini_project.POMClasses;
@@ -12,7 +13,6 @@ namespace uk.co.nfocus.ecommerce_mini_project
     internal class Tests : BaseTest
     {
         private const decimal couponWorth = 0.15M;
-        //private const int shippingCost = 395;       //TO:DO > Get shipping cost from website dynamically
 
         /* First test case
          * Logs in and attempts to apply discount to a cart with items in, then logs out.
@@ -70,7 +70,7 @@ namespace uk.co.nfocus.ecommerce_mini_project
             {
                 Assert.That(actualDiscount, Is.EqualTo(expectedDiscount), "Incorrect discount applied");
             }
-            catch (Exception)   //TO:DO > Catch Assert exceptions only
+            catch (Exception)   //TODO > Catch Assert exceptions only
             {
                 //Do nothing
             }
@@ -88,7 +88,7 @@ namespace uk.co.nfocus.ecommerce_mini_project
             {
                 Assert.That(actualTotal, Is.EqualTo(expectedTotal), "Final total price incorrect");
             }
-            catch (Exception)   //TO:DO > Catch Assert exceptions only
+            catch (Exception)   //TODO > Catch Assert exceptions only
             {
                 //Do nothing
             }
@@ -180,7 +180,7 @@ namespace uk.co.nfocus.ecommerce_mini_project
             {
                 Assert.That(isOrderCreated, "Order not in set");
             }
-            catch(Exception)   //TO:DO > Catch Assert exceptions only
+            catch(Exception)   //TODO > Catch Assert exceptions only
             {
                 //Do nothing
             }
