@@ -38,9 +38,12 @@ namespace uk.co.nfocus.ecommerce_mini_project.Utilities
             wait.Until(drv => drv.Url.Contains(urlSubstring));
         }
 
-        //--------------------------------------------------
-        //TODO > Write wait method for aleady given element
-        //--------------------------------------------------
+        // Explicit wait for an already given element object to be displayed
+        public static void WaitForElDisplayed(IWebDriver driver, IWebElement element)
+        {
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(4));
+            wait.Until(drv => element.Displayed);
+        }
 
         // Remove all non numerical characters from a string
         // Returns integer

@@ -22,15 +22,12 @@ namespace uk.co.nfocus.ecommerce_mini_project.Utilities
         [SetUp]
         protected void SetUp()
         {
-            // Get environmet variables
+            // Get environment variables
             string browser = Environment.GetEnvironmentVariable("BROWSER");
             Console.WriteLine($"Browser is set to: {browser}");
 
-            //string runsettings = TestContext.Parameters["WebAppUrl"];
-            //Console.WriteLine("The runsettings param was " + runsettings);
-
-            // Set up the driver instance
-            //driver = new EdgeDriver();
+            //string webUrl = TestContext.Parameters["WebAppUrl"];
+            //Console.WriteLine("The website url is " + webUrl);
 
             //string browser = "edge";
 

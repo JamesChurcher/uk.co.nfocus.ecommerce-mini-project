@@ -26,29 +26,29 @@ namespace uk.co.nfocus.ecommerce_mini_project.POMClasses
         }
 
         //Locators
-        //private IWebElement _discountCodeField => _driver.FindElement(By.Id("coupon_code"));
-        private IWebElement _discountCodeField
-        {
-            get
-            {
-                WaitForElDisplayed(_driver, By.Id("coupon_code"));
-                return _driver.FindElement(By.Id("coupon_code"));
-            }
-        }
+        private IWebElement _discountCodeField => _driver.FindElement(By.Id("coupon_code"));
+        //private IWebElement _discountCodeField
+        //{
+        //    get
+        //    {
+        //        WaitForElDisplayed(_driver, By.Id("coupon_code"));
+        //        return _driver.FindElement(By.Id("coupon_code"));
+        //    }
+        //}
         private IWebElement _applyDiscountButton => _driver.FindElement(By.Name("apply_coupon"));
-        //private IWebElement _removeFromCartButton => _driver.FindElement(By.LinkText("×"));     //TODO > Maybe change to be more robust
         private IWebElement _removeFromCartButton => _driver.FindElement(By.ClassName("remove"));
+        private IReadOnlyList<IWebElement> _removeFromCartButtons => _driver.FindElements(By.ClassName("remove"));
         private IWebElement _removeDiscountButton => _driver.FindElement(By.LinkText("[Remove]"));
 
-        //private IWebElement _cartDiscountLabel => _driver.FindElement(By.CssSelector(".cart-discount .amount"));    //TODO > Apply wait
-        private IWebElement _cartDiscountLabel
-        {
-            get
-            {
-                WaitForElDisplayed(_driver, By.CssSelector(".cart-discount .amount"));
-                return _driver.FindElement(By.CssSelector(".cart-discount .amount"));
-            }
-        }
+        private IWebElement _cartDiscountLabel => _driver.FindElement(By.CssSelector(".cart-discount .amount"));
+        //private IWebElement _cartDiscountLabel
+        //{
+        //    get
+        //    {
+        //        WaitForElDisplayed(_driver, By.CssSelector(".cart-discount .amount"));
+        //        return _driver.FindElement(By.CssSelector(".cart-discount .amount"));
+        //    }
+        //}
         private IWebElement _cartTotalLabel => _driver.FindElement(By.CssSelector(".order-total bdi"));
         private IWebElement _cartSubtotalLabel => _driver.FindElement(By.CssSelector(".cart-subtotal bdi"));
         private IWebElement _cartShippingCostLabel => _driver.FindElement(By.CssSelector(".shipping bdi"));
@@ -58,44 +58,55 @@ namespace uk.co.nfocus.ecommerce_mini_project.POMClasses
         //Enter discount code
         public CartPagePOM SetDiscountCode(string code)
         {
+            WaitForElDisplayed(_driver, _discountCodeField);
             _discountCodeField.Clear();
             _discountCodeField.SendKeys(code);
             return this;
         }
 
+        //Submit the discount
         public void SubmitDiscountForm()
         {
             _applyDiscountButton.Click();
         }
 
+        //Remove discount from cart
         public void ClickRemoveDiscountButton()
         {
             _removeDiscountButton.Click();
         }
         
+        //Remove the top item from the cart
         public void ClickRemoveItemButton()
         {
             _removeFromCartButton.Click();
         }
 
-        // Returns decimal
+        //Get the cost removed by the discount and format as a decimal type
         public decimal GetAppliedDiscount()
         {
+            WaitForElDisplayed(_driver, _cartDiscountLabel);
             return StringToDecimal(_cartDiscountLabel.Text);
         }
 
+        //Get the cart subtotal and format as a decimal type
         public decimal GetCartSubtotal()
         {
+            WaitForElDisplayed(_driver, _cartSubtotalLabel);
             return StringToDecimal(_cartSubtotalLabel.Text);
         }
 
+        //Get the cart total and format as a decimal type
         public decimal GetCartTotal()
         {
+            WaitForElDisplayed(_driver, _cartTotalLabel);
             return StringToDecimal(_cartTotalLabel.Text);
         }
 
+        //Get the shipping cost and format as a decimal type
         public decimal GetShippingCost()
         {
+            WaitForElDisplayed(_driver, _cartShippingCostLabel);
             return StringToDecimal(_cartShippingCostLabel.Text);
         }
 
@@ -111,11 +122,10 @@ namespace uk.co.nfocus.ecommerce_mini_project.POMClasses
 
             try
             {
-                //WaitForElDisplayed(_driver, By.CssSelector(".cart-discount .amount"));  //Wait until discount has been applied
                 WaitForElDisplayed(_driver, By.LinkText("[Remove]"));  //Wait until discount has been applied
                 return true;    //Coupon applied
             }
-            catch (NoSuchElementException e)
+            catch (NoSuchElementException)
             {
                 return false;   //Coupon rejected
             }
@@ -125,33 +135,15 @@ namespace uk.co.nfocus.ecommerce_mini_project.POMClasses
         public void MakeCartEmpty()
         {
             ClickRemoveDiscountButton();
-            //Console.WriteLine("Is remove item button clickable? " + _removeFromCartButton.Enabled);
 
-            //Wait for banner confirming discount removal to load
-            //new WebDriverWait(_driver, TimeSpan.FromSeconds(4)).Until(drv => drv.FindElement(By.ClassName("woocommerce-message")).Text.Contains("Coupon has been removed."));
+            //Wait until discount is no longer applied
+            new WebDriverWait(_driver, TimeSpan.FromSeconds(4)).Until(drv => (drv.FindElements(By.LinkText("[Remove]")).Count == 0));
 
-            new WebDriverWait(_driver, TimeSpan.FromSeconds(4)).Until(drv => (drv.FindElements(By.LinkText("[Remove]")).Count == 0));    //Wait until discount is no longer applied
-
-            ClickRemoveItemButton();
-
-            //for (int i = 0; i < 10; i++)
-            //{
-            //    try
-            //    {
-            //        Console.WriteLine("For loop i is " + i);
-            //        Thread.Sleep(1000);
-            //        ClickRemoveItemButton();
-            //        break;
-            //    }
-            //    catch (Exception)
-            //    {
-            //        Thread.Sleep(100);
-            //        Console.WriteLine("Caught exception " + i);
-            //        //Do nothing
-            //    }
-            //}
-
-            //new WebDriverWait(_driver, TimeSpan.FromSeconds(3)).Until(drv => !_removeFromCartButton.Displayed);    //Wait until item is no longer applied
+            // Loop over the remove button for every item in the cart
+            for(int i=_removeFromCartButtons.Count; i>0; i--)
+            {
+                _removeFromCartButtons[0].Click();
+            }
 
             WaitForElDisplayed(_driver, By.ClassName("cart-empty"));  //Wait for empty cart to be loaded
         }
